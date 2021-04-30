@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(dem_converter)
 
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake
+  CACHE STRING "Vcpkg toolchain file")
 
 file(GLOB_RECURSE src_files "src/*.rc" "src/*.cpp" "src/*.c" "src/*.h")
 add_executable(${CMAKE_PROJECT_NAME}
