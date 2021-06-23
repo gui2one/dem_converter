@@ -2,9 +2,10 @@
 
 std::vector<short> DemLoader::Load(std::string file_path)
 {
-    std::vector<short> heights = {SHRT_MIN};
+    std::vector<short> heights;
     const int SRTM_SIZE = 1201;
-    std::ifstream file(file_path, std::ios::in | std::ios::binary);
+    heights.reserve(SRTM_SIZE * SRTM_SIZE);
+    std::ifstream file(file_path, std::ios::beg | std::ios::binary);
     if (!file)
     {
         std::cout << "Error opening file!" << std::endl;
@@ -12,7 +13,7 @@ std::vector<short> DemLoader::Load(std::string file_path)
     }
 
     unsigned char buffer[2];
-    for (int i = 0; i < SRTM_SIZE * SRTM_SIZE; i++)
+    for (int i = 0; i < SRTM_SIZE * SRTM_SIZE; ++i)
     {
 
         if (!file.read(reinterpret_cast<char *>(buffer), sizeof(buffer)))
@@ -20,7 +21,9 @@ std::vector<short> DemLoader::Load(std::string file_path)
             std::cout << "Error reading file!" << std::endl;
             return std::vector<short>();
         }
-        heights.push_back((buffer[0] << 8) | buffer[1]);
+
+        short val = (buffer[0] << 8) | buffer[1];
+        heights.emplace_back(val);
     }
 
     return heights;
